@@ -1,0 +1,94 @@
+{
+  "name": "EnglishPartner",
+  "description": "英语陪练伙伴（查词+词根+发音+口语）",
+  "version": "1.0",
+  "mainAgent": "EnglishPartner_Main",
+  "agents": [
+    {
+      "name": "EnglishPartner_Main",
+      "type": "main",
+      "description": "英语伙伴主调度Agent",
+      "workflows": ["word_query_workflow", "single_skill_workflow"]
+    },
+    {
+      "name": "WordTranslate_Agent",
+      "type": "sub",
+      "description": "单词双语翻译子Agent",
+      "skills": ["Skill_WordQuery"]
+    },
+    {
+      "name": "RootAffix_Agent",
+      "type": "sub",
+      "description": "词根词缀解析子Agent",
+      "skills": ["Skill_RootAnalyze"]
+    },
+    {
+      "name": "Pronunciation_Agent",
+      "type": "sub",
+      "description": "音标拼读发音子Agent",
+      "skills": ["Skill_Pronounce"]
+    }
+  ],
+  "skills": [
+    {
+      "name": "Skill_WordQuery",
+      "type": "local_data",
+      "description": "本地双语词库查询",
+      "dataPath": "datas/word_lib.json",
+      "searchField": "word_lower",
+      "capabilities": ["单词查询", "中英释义", "词性", "搭配", "例句"]
+    },
+    {
+      "name": "Skill_RootAnalyze",
+      "type": "local_data",
+      "description": "本地词根库查询",
+      "dataPath": "datas/root_lib.json",
+      "searchField": "word_lower",
+      "capabilities": ["词根拆解", "词缀解析", "同源单词", "记忆逻辑"]
+    },
+    {
+      "name": "Skill_Pronounce",
+      "type": "local_data",
+      "description": "本地音标拼读查询",
+      "dataPath": "datas/pronounce_lib.json",
+      "searchField": "word_lower",
+      "capabilities": ["英美音标", "音节划分", "重音", "发音提示", "易错提醒"]
+    }
+  ],
+  "workflows": [
+    {
+      "name": "word_query_workflow",
+      "description": "单词全功能查询流程",
+      "trigger": "用户输入纯英文单词",
+      "steps": [
+        {
+          "agent": "WordTranslate_Agent",
+          "skill": "Skill_WordQuery",
+          "mode": "sync"
+        },
+        {
+          "agent": "RootAffix_Agent",
+          "skill": "Skill_RootAnalyze",
+          "mode": "parallel"
+        },
+        {
+          "agent": "Pronunciation_Agent",
+          "skill": "Skill_Pronounce",
+          "mode": "parallel"
+        }
+      ]
+    },
+    {
+      "name": "single_skill_workflow",
+      "description": "单一功能查询流程",
+      "trigger": "用户仅查发音/仅查词根",
+      "steps": [
+        {
+          "agent": "根据意图自动选择",
+          "skill": "根据意图自动选择",
+          "mode": "single"
+        }
+      ]
+    }
+  ]
+}

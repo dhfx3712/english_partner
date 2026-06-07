@@ -1,0 +1,134 @@
+{
+  "providers": {
+    "volcengine-plan": {
+      "baseUrl": "https://ark.cn-beijing.volces.com/api/coding/v3",
+      "apiKey": "48874b67-dcfe-433a-9a20-a62e1992deb0",
+      "api": "openai-completions",
+      "models": [
+        {
+          "id": "ark-code-latest",
+          "name": "ark-code-latest",
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 32000,
+          "reasoning": false,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "api": "openai-completions"
+        }
+      ]
+    },
+    "ark": {
+      "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+      "apiKey": "48874b67-dcfe-433a-9a20-a62e1992deb0",
+      "api": "openai-completions",
+      "models": [
+        {
+          "id": "doubao-seed-2-0-lite-260428",
+          "name": "doubao-seed-2-0-lite-260428",
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 12800,
+          "reasoning": false,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "api": "openai-completions"
+        }
+      ]
+    },
+    "deepseek": {
+      "baseUrl": "https://api.deepseek.com/v1",
+      "apiKey": "sk-f2ddfe3e161b4bc683f34e0a3f6bfb78",
+      "api": "openai-completions",
+      "models": [
+        {
+          "id": "deepseek-chat",
+          "name": "DeepSeek通用对话",
+          "reasoning": false,
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "api": "openai-completions"
+        },
+        {
+          "id": "deepseek-reasoner",
+          "name": "DeepSeek-R1推理模型",
+          "reasoning": true,
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "api": "openai-completions"
+        },
+        {
+          "id": "deepseek-v4-flash",
+          "name": "DeepSeek-V4极速版",
+          "reasoning": true,
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "api": "openai-completions"
+        }
+      ]
+    },
+    "zai": {
+      "baseUrl": "https://open.bigmodel.cn/api/paas/v4",
+      "apiKey": "9f879bea7a334edfa5329ec87e923cea.imdyWhYIErqpRRU7",
+      "models": [
+        {
+          "id": "glm-4.7-flash",
+          "name": "GLM4.7极速版",
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "reasoning": false,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    }
+  }
+}
