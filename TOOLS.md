@@ -1,20 +1,71 @@
-# 本地知识库工具
-1. Skill_WordQuery
-   - 功能：单词查询
-   - 数据源：datas/word_lib.json
-   - 字段：word, pos, cn_meaning, collocation, example_sentence
+# 整体说明
+本文档统一说明所有本地工具、技能、数据源、匹配规则、调用逻辑，适配当前 OpenClaw 配置，分为数据技能、脚本技能、通用规则三部分。
 
-2. Skill_RootAnalyze
-   - 功能：词根词缀解析
-   - 数据源：datas/root_lib.json
-   - 字段：root, prefix, suffix, affix_desc, relative_words
+---
 
-3. Skill_Pronounce
-   - 功能：发音与拼读
-   - 数据源：datas/pronounce_lib.json
-   - 字段：phonetic_uk, phonetic_us, syllable, stress_pos, pronounce_tip
+## 一、本地数据类 Skill（local_data）
+### 1. Skill_WordQuery 单词查询&例句生成
+- 功能：单词检索、释义、词性、搭配、AI 生成例句
+- 数据源：datas/word_lib.json
+- 检索字段：word_lower（全小写单词，统一匹配依据）
+- 匹配模式：优先精准匹配，无结果自动切换模糊匹配
+- 核心字段说明：
+  - id：数字，数据唯一编号（必填）
+  - word：原始单词（区分大小写）
+  - word_lower：小写单词，检索关键字（必填）
+  - pos：数组，单词词性
+  - cn_meaning：字符串，中文释义（必填）
+  - collocation：数组，固定搭配
+  - example_sentence：数组，单词配套例句
+  - level：字符串，难度等级（中考/高考/CET4/CET6）
+- 错误提示：{word} 替换为当前查询单词
 
-# 调用规则
-- 全部小写匹配（word_lower）
-- 优先精准匹配，无结果则模糊匹配
-- 全部本地离线运行，无网络请求
+### 2. Skill_RootAnalyze 词根词缀解析
+- 功能：单词词根、前缀、后缀拆解，记忆技巧、同源词拓展
+- 数据源：datas/root_lib.json
+- 检索字段：word_lower
+- 匹配模式：精准匹配优先，降级模糊匹配
+- 核心字段说明：
+  - root：词根
+  - prefix：前缀
+  - suffix：后缀
+  - affix_desc：构词逻辑说明
+  - relative_words：同源单词数组
+
+### 3. Skill_Pronounce 音标与发音查询
+- 功能：英美音标、音节、重音、发音技巧、易错点提醒
+- 数据源：datas/pronounce_lib.json
+- 检索字段：word_lower
+- 匹配模式：精准匹配优先，降级模糊匹配
+- 核心字段说明：
+  - phonetic_uk：英式音标
+  - phonetic_us：美式音标
+  - syllable：音节划分
+  - stress_pos：重音位置
+  - pronounce_tip：发音要点
+  - easy_mistake：常见发音错误提醒
+
+---
+
+## 二、脚本类 Skill（local_script）
+### Skill_GrammarAnalyze 例句语法分析
+- 运行方式：调用本地脚本 ./grammar_engine.py
+- 入参：generated_sentence（上游传递的英文例句）
+- 出参：标准结构化语法 JSON 结果
+- 核心能力：
+  1. 正则匹配识别句型（五大句型/三大从句/非谓语/使役动词/并列结构等）
+  2. 划分句子成分、标注语法大类与细分类型
+  3. 输出语法考点、易错点、仿写例句、难度等级
+- 规则依据：全套自定义正则表达式 + 教材级语法映射字典
+- 特点：纯本地运算，不调用大模型，零 Token 消耗
+
+---
+
+## 三、通用调用规则
+1. 统一匹配规则：所有单词检索均以 **word_lower 小写字段** 为基准，自动忽略用户输入大小写
+2. 单词判定规则：仅匹配 1~20 位纯英文字母，符合正则 `^[a-zA-Z]{1,20}$` 才触发全流程查询
+3. 工作流执行规则：
+   - 完整单词流程：单词查询(同步) → 词根+发音(并行) → 语法分析(同步，传递例句数据)
+   - 单一功能流程：根据用户意图关键词，自动路由至对应专项技能
+4. 结果合并规则：多 Agent 并行输出后，按固定顺序整合内容，空数据统一展示「暂无相关信息」
+5. 文件规范：空内容统一使用空数组 `[]` / 空字符串 `""`，禁止使用 null
