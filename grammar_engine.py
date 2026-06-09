@@ -169,7 +169,7 @@ PATTERN_FULL_MAP = {
             "make后接宾补，主动语态用动词原形",
             "被动语态需加to：be made to do",
             "中考语法填空必考搭配"
-        },
+        ],
         "sentence_structure": "主谓 + 宾语 + 宾语补足语(动词原形)",
         "similar_base": ["He makes me laugh.", "The story makes us moved."],
         "imitate_examples": ["She makes me study hard.", "They make us wait here."],
@@ -187,7 +187,7 @@ PATTERN_FULL_MAP = {
             "不定式可作主语、宾语、定语、状语",
             "非谓语核心考点，区分to do/doing",
             "五大句型拓展核心成分"
-        },
+        ],
         "sentence_structure": "主干 + 不定式(非谓语成分)",
         "similar_base": ["I want to go.", "It is easy to learn."],
         "imitate_examples": ["I decide to try again.", "She plans to travel."],
@@ -205,7 +205,7 @@ PATTERN_FULL_MAP = {
             "多描述人物品质、情绪",
             "中考高频短语，写作常用",
             "区分be of / be for / be with"
-        },
+        ],
         "sentence_structure": "主系表结构，of短语作状语",
         "similar_base": ["be proud of", "be afraid of"],
         "imitate_examples": ["She is proud of her family.", "We are afraid of darkness."],
@@ -241,7 +241,7 @@ PATTERN_FULL_MAP = {
             "主谓一致遵循就近原则",
             "可连接主语、谓语、句子",
             "全学段通用高分句型"
-        },
+        ],
         "sentence_structure": "并列双主干结构",
         "similar_base": ["He not only sings but also dances."],
         "imitate_examples": ["This plan not only saves time but cuts cost."],

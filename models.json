@@ -31,8 +31,8 @@
       "api": "openai-completions",
       "models": [
         {
-          "id": "doubao-seed-2-0-lite-260428",
-          "name": "doubao-seed-2-0-lite-260428",
+          "id": "doubao-seed-2-0-mini-260428",
+          "name": "doubao-seed-2-0-mini-260428",
           "input": [
             "text",
             "image"
