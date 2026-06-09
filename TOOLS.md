@@ -9,7 +9,7 @@
 
 ### 1. 单词释义（必有）
 ```bash
-cd /root/.openclaw/EnglishPartner && python3 query_engine.py word <word>
+ep-query word <word>
 ```
 - 返回 JSON，包含字段：word, pos, cn_meaning, collocation, example_sentence, level
 - 数据源：datas/split/word/ 下的小文件（已拆分）
@@ -17,28 +17,29 @@ cd /root/.openclaw/EnglishPartner && python3 query_engine.py word <word>
 
 ### 2. 词根词缀（并行）
 ```bash
-cd /root/.openclaw/EnglishPartner && python3 query_engine.py root <word>
+ep-query root <word>
 ```
 - 返回 JSON，包含字段：root, prefix, suffix, affix_desc, relative_words
 - 无数据时返回空对象 `{}`
 
 ### 3. 发音音标（并行）
 ```bash
-cd /root/.openclaw/EnglishPartner && python3 query_engine.py pronounce <word>
+ep-query pronounce <word>
 ```
 - 返回 JSON，包含字段：phonetic_uk, phonetic_us, syllable, stress_pos, pronounce_tip, easy_mistake
 - 无数据时返回空对象 `{}`
 
 ### 4. 例句语法分析（串行，需要先生成例句）
 ```bash
-cd /root/.openclaw/EnglishPartner && python3 -c "
-import sys; sys.path.insert(0,'.')
-from grammar_engine import analyze_sentence
-print(analyze_sentence('<AI生成的英文例句>'))
-"
+ep-query grammar '<AI生成的英文例句>'
 ```
 - 返回标准结构化 JSON：句型、成分、考点、难度等
 - 纯本地正则匹配，零 Token 消耗
+
+### ⚠️ 安全规则
+- **禁止**直接运行 `python3 query_engine.py`，只能通过 `ep-query` 调用
+- **禁止**运行 `cat`、`ls`、`head`、`tail` 等文件/目录操作命令
+- **禁止**读取任何配置文件
 
 ---
 
