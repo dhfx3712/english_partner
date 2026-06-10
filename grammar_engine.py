@@ -3,90 +3,96 @@ import json
 
 # ===================== 全量正则（直接使用你提供的全套语法）=====================
 PATTERNS = [
-    # 一、英语五大基本句型
-    r"sb\s+vi",
-    r"sb\s+vt\s+sth",
-    r"sb\s+link\s+adj",
-    r"sb\s+vt\s+sb\s+sth",
-    r"sb\s+vt\s+sth\s+complement",
-    r"there\s+be",
+    # ===== 强调句 =====
+    r"\bit\s+(is|was)\b.*\bthat\b",
 
-    # 二、名词性从句
-    r"that\s+从句",
-    r"whether\s+从句",
-    r"if\s+从句",
-    r"what\s+从句",
-    r"who\s+从句",
-    r"whose\s+从句",
-    r"where\s+从句",
-    r"when\s+从句",
-    r"why\s+从句",
-    r"how\s+从句",
-    r"the\s+fact\s+that",
-    r"the\s+news\s+that",
+    # ===== 比较级叠加 =====
+    r"\bthe\s+(more|less|better|worse|\w+er)\b.*\bthe\s+(more|less|better|worse|\w+er)\b",
 
-    # 三、定语从句
-    r"who\s+that",
-    r"which\s+that",
-    r"whose",
-    r"in\s+which",
-    r"on\s+which",
-    r"at\s+which",
-    r"where",
-    r"when",
-    r"why",
-    r"as\s+引导定语从句",
+    # ===== There be 存在句 =====
+    r"\bthere\s+(is|are|was|were|has\s+been|have\s+been)\b",
 
-    # 四、九大状语从句
-    r"when", r"while", r"as", r"before", r"after", r"since", r"until", r"as\s+soon\s+as",
-    r"if", r"unless", r"as\s+long\s+as", r"on\s+condition\s+that",
-    r"because", r"since", r"now\s+that",
-    r"although", r"though", r"even\s+if", r"even\s+though",
-    r"so\s+that", r"such\s+that",
-    r"in\s+order\s+that", r"so\s+that",
-    r"as\s+as", r"more\s+than", r"the\s+more",
-    r"where", r"wherever",
-    r"as\s+if", r"as\s+though",
+    # ===== 宾语从句 =====
+    r"\b(think|believe|know|say|feel|hope|wish|suggest|mean|show|find|decide|realize|understand|agree|admit|doubt|notice|remember|forget)\s+that\b",
 
-    # 五、特殊句式
-    r"it\s+is\s+that", r"it\s+was\s+that",
-    r"only\s+状语", r"never", r"hardly", r"rarely", r"no\s+sooner\s+than",
+    # ===== 同位语从句 =====
+    r"\b(the\s+)?(fact|news|idea|belief|suggestion|truth|report|conclusion)\s+that\b",
 
-    # 六、非谓语动词
-    r"to\s+do",
-    r"doing",
-    r"done",
-    r"having\s+done",
-    r"being\s+done",
+    # ===== 让步状语从句 =====
+    r"\b(although|though|even\s+(if|though))\b",
 
-    # 七、be+形容词固定搭配
-    r"be\s+adj\s+of", r"be\s+adj\s+for", r"be\s+adj\s+with",
-    r"be\s+adj\s+to", r"be\s+adj\s+in", r"be\s+adj\s+at",
-    r"be\s+made\s+of", r"be\s+made\s+from", r"be\s+filled\s+with",
+    # ===== 原因状语从句 =====
+    r"\b(because)\b",
 
-    # 八、使役动词
-    r"make\s+sb\s+do",
-    r"let\s+sb\s+do",
-    r"have\s+sb\s+do",
-    r"get\s+sb\s+to\s+do",
+    # ===== 目的/结果状语从句 =====
+    r"\b(so\s+that|such\s+that|in\s+order\s+that)\b",
 
-    # 九、并列结构 & 高级句型
-    r"not\s+only\s+but\s+also",
-    r"both\s+and",
-    r"either\s+or",
-    r"neither\s+nor",
-    r"rather\s+than",
-    r"there\s+is\s+no\s+doubt\s+that",
-    r"as\s+far\s+as\s+i\s+am\s+concerned",
-    r"when\s+it\s+to",
-    r"with\s+复合结构"
+    # ===== 时间状语从句 =====
+    r"\b(as\s+soon\s+as|once|the\s+moment|the\s+minute)\b",
+
+    # ===== 条件状语从句 =====
+    r"\b(unless|as\s+long\s+as|on\s+condition\s+that|provided\s+that)\b",
+
+    # ===== 原因/方式状语从句 =====
+    r"\b(now\s+that|seeing\s+that|considering\s+that)\b",
+
+    # ===== 方式状语从句 =====
+    r"\b(as\s+if|as\s+though)\b",
+
+    # ===== 时间/条件从句（通用） =====
+    r"\b(when|while|before|after|since|until)\b",
+
+    # ===== if 条件从句 =====
+    r"\b(if)\b",
+
+    # ===== 使役动词 =====
+    r"\b(make|makes|made)\s+\w+\s+\w+\b",
+    r"\b(let|lets)\s+\w+\s+\w+\b",
+    r"\b(get|gets|got)\s+\w+\s+to\s+\w+\b",
+    r"\b(have|has|had)\s+\w+\s+\w+\b",
+
+    # ===== 并列结构 =====
+    r"\b(both|either|neither)\b.*\b(and|or|nor)\b",
+    r"\brather\s+than\b",
+
+    # ===== be + 形容词 + 介词 =====
+    r"\b(be|is|are|am|was|were)\s+\w+\s+(of|for|with|to|in|at|about|from)\b",
+
+    # ===== 定语从句 =====
+    r"\b(which|that)\s+(is|are|was|were|has|have|do|does|did|can|will|would|could|should|must|may|might)\b",
+    r"\b(who)\s+(is|are|was|were|has|have|does|did|can|will)\b",
+    r"\b(in|on|at|for|with|by|to|of|about|from)\s+(which|whom)\b",
+    r"\bwhere\s+\w+\s+(is|are|was|were|has|have|do|does|did|can|will)\b",
+    r"\bwhy\s+\w+\s+(is|are|was|were|has|have|do|does|did|can|will)\b",
+
+    # ===== 名词性从句（连接词） =====
+    r"\b(whether|if)\s+\w+\s+(is|are|was|were|has|have|do|does|did|can|will|would|could|should)\b",
+    r"\bwhat\s+\w+\s+(is|are|was|were|has|have|do|does|did|can|will)\b",
+    r"\bwho\s+(is|are|was|were|has|have|does|did|can|will)\b",
+    r"\bwhose\b",
+    r"\bhow\s+(to|many|much|long|far|often|soon|old|well)\b",
+    r"\b(whether|how)\b",
+
+    # ===== 倒装句 =====
+    r"\b(never|rarely|seldom|hardly|scarcely|little)\s+(have|has|had|is|are|was|were|do|does|did|can|could|will|would)\b",
+    r"\bonly\s+(then|when|after|if|by|in|with|through)\b",
+
+    # ===== 非谓语动词 =====
+    r"\bto\s+\w+\b",
+    r"\b(having\s+been|being|having)\s+\w+ed\b",
+    r"\b(be|get|become)\s+\w+ed\b",
+
+    # ===== 递进并列 =====
+    r"\bnot\s+only\b.*\bbut\s+also\b",
+    r"\bno\s+sooner\b.*\bthan\b",
+    r"\bhardly\b.*\bwhen\b",
 ]
 
 REGEX = re.compile("|".join(PATTERNS), re.IGNORECASE)
 
 # ===================== 你的完整语法映射 =====================
 PATTERN_FULL_MAP = {
-    r"there\s+be": {
+    r"\bthere\s+(is|are|was|were|has\s+been|have\s+been)\b": {
         "pattern_key": "there be 句型",
         "pattern_name": "There be 存在句",
         "grammar_type": "五大基本句型",
@@ -104,7 +110,7 @@ PATTERN_FULL_MAP = {
         "base_diff": "中考",
         "level": "基础"
     },
-    r"it\s+is\s+that": {
+    r"\bit\s+(is|was)\b.*\bthat\b": {
         "pattern_key": "it is ... that 强调句",
         "pattern_name": "It型强调句型",
         "grammar_type": "特殊句式",
@@ -122,7 +128,7 @@ PATTERN_FULL_MAP = {
         "base_diff": "CET4",
         "level": "进阶"
     },
-    r"that\s+从句": {
+    r"\b(think|believe|know|say|feel|hope|wish|suggest|mean|show|find|decide|realize|understand|agree|admit|doubt|notice|remember|forget)\s+that\b": {
         "pattern_key": "that 宾语从句",
         "pattern_name": "that引导宾语从句",
         "grammar_type": "名词性从句",
@@ -140,7 +146,7 @@ PATTERN_FULL_MAP = {
         "base_diff": "高考",
         "level": "进阶"
     },
-    r"although": {
+    r"\b(although|though|even\s+(if|though))\b": {
         "pattern_key": "although 让步从句",
         "pattern_name": "although引导让步状语从句",
         "grammar_type": "状语从句",
@@ -158,7 +164,7 @@ PATTERN_FULL_MAP = {
         "base_diff": "高考",
         "level": "进阶"
     },
-    r"make\s+sb\s+do": {
+    r"\b(make|makes|made)\s+\w+\s+\w+\b": {
         "pattern_key": "make sb do",
         "pattern_name": "make使役结构",
         "grammar_type": "使役动词",
@@ -176,7 +182,7 @@ PATTERN_FULL_MAP = {
         "base_diff": "中考",
         "level": "基础"
     },
-    r"to\s+do": {
+    r"\bto\s+\w+\b": {
         "pattern_key": "动词不定式 to do",
         "pattern_name": "动词不定式结构",
         "grammar_type": "非谓语动词",
@@ -194,7 +200,7 @@ PATTERN_FULL_MAP = {
         "base_diff": "高考",
         "level": "进阶"
     },
-    r"be\s+adj\s+of": {
+    r"\b(be|is|are|am|was|were)\s+\w+\s+(of|for|with|to|in|at|about|from)\b": {
         "pattern_key": "be + adj + of",
         "pattern_name": "be+形容词+of 固定搭配",
         "grammar_type": "形容词搭配",
@@ -212,7 +218,7 @@ PATTERN_FULL_MAP = {
         "base_diff": "中考",
         "level": "基础"
     },
-    r"the\s+more": {
+    r"\bthe\s+(more|less|better|worse|\w+er)\b.*\bthe\s+(more|less|better|worse|\w+er)\b": {
         "pattern_key": "the more ... the more",
         "pattern_name": "比较级叠加句型",
         "grammar_type": "状语从句",
@@ -230,7 +236,7 @@ PATTERN_FULL_MAP = {
         "base_diff": "CET6",
         "level": "高阶"
     },
-    r"not\s+only\s+but\s+also": {
+    r"\bnot\s+only\b.*\bbut\s+also\b": {
         "pattern_key": "not only but also",
         "pattern_name": "递进并列结构",
         "grammar_type": "并列句",
@@ -313,15 +319,11 @@ def analyze_sentence(sentence: str) -> str:
 
 # 本地测试入口
 if __name__ == "__main__":
-    test_sentences = [
-        "There is a book on the desk.",
-        "He makes me study hard.",
-        "I think that you are right.",
-        "Although it is cold, we go out.",
-        "I want to learn English."
-    ]
-    
-    for sent in test_sentences:
+    import sys
+    if len(sys.argv) > 1:
+        sentence = sys.argv[1]
         print("=" * 80)
-        print(f"例句：{sent}")
-        print(f"语法分析：\n{analyze_sentence(sent)}")
+        print(f"例句：{sentence}")
+        print(f"语法分析：\n{analyze_sentence(sentence)}")
+    else:
+        print('{"error":"No sentence provided"}')

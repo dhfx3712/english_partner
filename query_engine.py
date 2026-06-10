@@ -63,6 +63,9 @@ def _daemon_serve():
       - Unix socket 监听，4 线程并发处理
       - 线程安全（GETTERS 字典多线程只读访问）
     """
+    # 单例保障：启动前清理同名的其他 daemon
+    _cleanup_stale_daemon()
+
     import signal as _signal
     from concurrent.futures import ThreadPoolExecutor
 
@@ -212,63 +215,100 @@ def _daemon_serve():
 # ═══════════════════════════════════════════════
 
 def _ensure_daemon() -> bool:
-    """确保 daemon 在运行，返回 True=可用 / False=降级"""
-    # 如果 pid 文件存在且进程还活着
+    """单例模式：确保唯一 daemon 在运行，返回 True=可用 / False=降级"""
+    # ── 1. 清理残留：杀掉旧 daemon，删除过期文件 ──
+    _cleanup_stale_daemon()
+
+    # ── 2. 检查当前 daemon 是否存活 ──
     if os.path.exists(DAEMON_PID_FILE):
         try:
             with open(DAEMON_PID_FILE) as f:
                 pid = int(f.read().strip())
-            # 检查进程是否存在
-            os.kill(pid, 0)
-            return True  # 进程存活
+            os.kill(pid, 0)       # 进程存活
+            return True
         except (OSError, ValueError):
-            # PID 文件过期
-            pass
+            pass  # PID 文件过期，继续往下走
 
-    # 尝试连接 socket
+    # ── 3. 清理过期 socket ──
     if os.path.exists(DAEMON_SOCKET):
         try:
-            s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-            s.settimeout(1.0)
-            s.connect(DAEMON_SOCKET)
-            s.close()
-            return True  # socket 可用（虽然 pid 有问题）
-        except Exception:
+            os.unlink(DAEMON_SOCKET)
+        except OSError:
             pass
 
-    # 尝试启动 daemon
+    # ── 4. 启动新 daemon ──
     try:
         daemon_args = [sys.executable, os.path.abspath(__file__), "daemon"]
         pid = os.fork()
         if pid == 0:
-            # 子进程：成为 daemon
             os.setsid()
-            # 关闭标准 fd
             devnull = os.open(os.devnull, os.O_RDWR)
             os.dup2(devnull, 0)
             os.dup2(devnull, 1)
             os.dup2(devnull, 2)
             os.closerange(3, 256)
-            # 执行 daemon
             os.execvp(sys.executable, daemon_args)
             sys.exit(0)
         else:
-            # 父进程：等待 daemon 启动
-            for _ in range(50):  # 最多等 5 秒
+            for _ in range(50):
                 time.sleep(0.1)
                 if os.path.exists(DAEMON_SOCKET):
                     return True
-            # 超时，检查 daemon 是否还在运行
             try:
                 wpid, status = os.waitpid(pid, os.WNOHANG)
                 if wpid == pid:
-                    # daemon 已退出
                     return False
             except ChildProcessError:
                 pass
             return False
     except Exception:
         return False
+
+
+def _cleanup_stale_daemon():
+    """清理残留 daemon 进程和过期文件（单例保障）"""
+    # 如果 PID 文件存在，检查进程是否真的活着
+    if os.path.exists(DAEMON_PID_FILE):
+        try:
+            with open(DAEMON_PID_FILE) as f:
+                pid = int(f.read().strip())
+            # 进程还活着 → 不动
+            os.kill(pid, 0)
+            return
+        except OSError:
+            # 进程已死 → 杀掉同名的其他 daemon 进程
+            pass
+        except ValueError:
+            pass
+
+    # 扫描并杀掉其他 query_engine.py daemon 进程（排除自己）
+    try:
+        import subprocess
+        result = subprocess.run(
+            ["pgrep", "-f", "query_engine.py daemon"],
+            capture_output=True, text=True, timeout=3
+        )
+        my_pid = os.getpid()
+        for pid_str in result.stdout.strip().split():
+            pid_str = pid_str.strip()
+            if not pid_str:
+                continue
+            try:
+                pid = int(pid_str)
+                if pid != my_pid:          # 不杀自己
+                    os.kill(pid, 15)       # SIGTERM
+            except (OSError, ValueError):
+                pass
+    except Exception:
+        pass
+
+    # 清理过期文件
+    for p in [DAEMON_SOCKET, DAEMON_PID_FILE]:
+        try:
+            if os.path.exists(p):
+                os.unlink(p)
+        except OSError:
+            pass
 
 
 def _daemon_query(lib: str, word: str) -> dict:
