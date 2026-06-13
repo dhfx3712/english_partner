@@ -60,6 +60,7 @@ PATTERNS = [
 
     # ===== 定语从句 =====
     r"\b(which|that)\s+(is|are|was|were|has|have|do|does|did|can|will|would|could|should|must|may|might)\b",
+    r"\b(which|that)\s+\w+(ed|s)\b",
     r"\b(who)\s+(is|are|was|were|has|have|does|did|can|will)\b",
     r"\b(in|on|at|for|with|by|to|of|about|from)\s+(which|whom)\b",
     r"\bwhere\s+\w+\s+(is|are|was|were|has|have|do|does|did|can|will)\b",
@@ -251,6 +252,24 @@ PATTERN_FULL_MAP = {
         "sentence_structure": "并列双主干结构",
         "similar_base": ["He not only sings but also dances."],
         "imitate_examples": ["This plan not only saves time but cuts cost."],
+        "base_diff": "高考",
+        "level": "进阶"
+    },
+    r"\b(which|that)\s+\w+(ed|s)\b": {
+        "pattern_key": "定语从句 that/which + 实义动词",
+        "pattern_name": "that/which引导定语从句（实义动词）",
+        "grammar_type": "定语从句",
+        "sub_type": "关系代词",
+        "pattern_template": "先行词 + that/which + 实义动词",
+        "default_cn": "……的……",
+        "grammar_analysis": [
+            "that/which 作从句主语，后接实义动词",
+            "that 可指人或物，which 指物",
+            "高考语法填空核心考点"
+        ],
+        "sentence_structure": "先行词 + 关系代词(作主语) + 谓语 + 宾语/状语",
+        "similar_base": ["The book that changed my life.", "The movie which won the award."],
+        "imitate_examples": ["The idea that inspired millions.", "The song which touched my heart."],
         "base_diff": "高考",
         "level": "进阶"
     }
