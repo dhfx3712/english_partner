@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# EnglishPartner 统一查询入口
+# 使用独立 venv 环境运行
+set -euo pipefail
+
+# 解析真实路径（支持符号链接）
+SCRIPT="$(readlink -f "$0")"
+DIR="$(dirname "$SCRIPT")"
+VENV_PYTHON="$DIR/venv/bin/python3"
+
+if [ ! -f "$VENV_PYTHON" ]; then
+    echo "Error: venv not found at $VENV_PYTHON" >&2
+    echo "Run: cd $DIR && python3 -m venv venv" >&2
+    exit 1
+fi
+
+exec "$VENV_PYTHON" "$DIR/query_engine.py" "$@"
