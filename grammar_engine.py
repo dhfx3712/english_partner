@@ -336,13 +336,11 @@ def analyze_sentence(sentence: str) -> str:
 
     return json.dumps(item, ensure_ascii=False, indent=2)
 
-# 本地测试入口
+# CLI 入口：保持 stdout 只输出 JSON，方便 ep-query 调用
 if __name__ == "__main__":
     import sys
     if len(sys.argv) > 1:
-        sentence = sys.argv[1]
-        print("=" * 80)
-        print(f"例句：{sentence}")
-        print(f"语法分析：\n{analyze_sentence(sentence)}")
+        sentence = " ".join(sys.argv[1:])
+        print(analyze_sentence(sentence))
     else:
         print('{"error":"No sentence provided"}')

@@ -6,3 +6,4 @@ stardict_all.csv
 __pycache__/
 memory/
 venv/
+plugins/

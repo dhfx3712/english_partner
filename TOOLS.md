@@ -1,88 +1,219 @@
-# 整体说明
-本文档说明查询英文单词时，如何通过 `exec` 工具调用本地 Python 脚本来获取数据。
-请**优先使用脚本命令**，不要自己写代码读取 JSON 文件。
+# EnglishPartner 工具调用规范
+
+本文档只定义工具调用方式。  
+任务流程以 AGENTS.md 为准，输出风格以 SOUL.md 为准。
 
 ---
 
-## 一、查词命令 exec 模板
-收到英文单词时，并发执行以下几个命令获取完整数据。
+## 1. 唯一查询入口
 
-### 1. 单词释义（必有）
+所有查询必须通过 `ep-query` 执行。
+
+`ep-query` 是 EnglishPartner 唯一允许的查询入口，负责统一命令格式，并使用项目自己的 Python 运行环境执行底层脚本。
+
+禁止直接运行：
+
+- `python3 query_engine.py`
+- `python3 grammar_engine.py`
+- 任何直接 Python 脚本调用
+- 任何直接读取数据文件的方式
+
+---
+
+## 2. 命令白名单
+
+只允许以下命令：
+
 ```bash
 ep-query word <word>
-```
-- 返回 JSON，包含字段：word, pos, cn_meaning, collocation, example_sentence, level
-- 数据源：datas/split/word/ 下的小文件（已拆分）
-- 找不到时返回空对象 `{}`
-
-### 2. 词根词缀（并行）
-```bash
 ep-query root <word>
+ep-query pronounce <word>
+ep-query grammar '<sentence>'
 ```
-- 返回 JSON，包含字段：root, prefix, suffix, affix_desc, relative_words
-- 无数据时返回空对象 `{}`
 
-### 3. 发音音标（并行）
+其他命令不属于标准查询流程，不得使用。
+
+---
+
+## 3. 完整查词流程
+
+用户输入单个英文单词，且没有专项限定时，执行以下流程。
+
+### 第一步：并行查询基础数据
+
 ```bash
+ep-query word <word>
+ep-query root <word>
 ep-query pronounce <word>
 ```
-- 返回 JSON，包含字段：phonetic_uk, phonetic_us, syllable, stress_pos, pronounce_tip, easy_mistake
-- 无数据时返回空对象 `{}`
 
-### 4. 例句语法分析（串行，需要先生成例句）
+### 第二步：生成 AI 例句
+
+根据释义生成一个简短自然的英文例句。  
+例句必须包含目标单词。
+
+### 第三步：分析例句语法
+
 ```bash
 ep-query grammar '<AI生成的英文例句>'
 ```
-- 返回标准结构化 JSON：句型、成分、考点、难度等
-- 纯本地正则匹配，零 Token 消耗
 
-### ⚠️ 安全规则
-- **禁止**直接运行 `python3 query_engine.py`，只能通过 `ep-query` 调用
-- **禁止**运行 `cat`、`ls`、`head`、`tail` 等文件/目录操作命令
-- **禁止**读取任何配置文件
+语法分析必须在例句生成后执行。
 
 ---
 
-## 二、输出结果处理规则
-1. **统一匹配规则**：所有单词检索均以小写基准，自动忽略大小写
-2. **空数据处理**：脚本返回空 `{}` 时，统一展示「暂无相关信息」
-3. **文件规范**：空内容统一使用空数组 `[]`/空字符串 `""`，无 null 值
-4. **并发顺序**：1/2/3 可并发，4 需在生成例句后串行执行
-5. **容错**：旧大文件（word_lib.json 等）已改名备份，不要再尝试读取
+## 4. 专项查询命令
 
----
+只问释义：
 
-## 三、输出示例（insulation）
-并发执行后汇总 JSON 结果，按以下格式组装回复：
-
-```markdown
-📖 **单词** /音标/ · 难度
-
-**🔊 发音**
-- 英式 /音标/
-- 美式 /音标/
-- 音节划分
-- 重音位置
-- 发音技巧
-- ⚠️ 易错点
-
-**📝 释义**
-- 词性① 中文释义
-- 词性② 中文释义
-- 搭配①
-- 搭配②
-
-**🌱 词根记忆**
-前缀 + 词根 + 后缀 → 构词逻辑
-同源词：xxx
-
-**💡 AI 例句**
-例句原文
-例句翻译
-
-**📐 语法分析**
-- 句型：xxx
-- 成分：xxx
-- 考点：xxx
-- 难度：xxx
+```bash
+ep-query word <word>
 ```
+
+只问词根：
+
+```bash
+ep-query root <word>
+```
+
+只问发音：
+
+```bash
+ep-query pronounce <word>
+```
+
+只问语法：
+
+```bash
+ep-query grammar '<sentence>'
+```
+
+---
+
+## 5. 返回字段说明
+
+### 5.1 释义查询
+
+命令：
+
+```bash
+ep-query word <word>
+```
+
+可能返回：
+
+- word
+- pos
+- cn_meaning
+- collocation
+- example_sentence
+- level
+
+空结果返回 `{}`。
+
+---
+
+### 5.2 词根查询
+
+命令：
+
+```bash
+ep-query root <word>
+```
+
+可能返回：
+
+- root
+- prefix
+- suffix
+- affix_desc
+- relative_words
+
+空结果返回 `{}`。
+
+不得自行编造词根、前缀或后缀。
+
+---
+
+### 5.3 发音查询
+
+命令：
+
+```bash
+ep-query pronounce <word>
+```
+
+可能返回：
+
+- phonetic_uk
+- phonetic_us
+- syllable
+- stress_pos
+- pronounce_tip
+- easy_mistake
+
+空结果返回 `{}`。
+
+不得自行编造音标。
+
+---
+
+### 5.4 语法分析
+
+命令：
+
+```bash
+ep-query grammar '<sentence>'
+```
+
+返回本地规则分析结果，包括句型、成分、考点、难度等信息。
+
+如果返回为空或异常，输出“暂无可用语法分析”。
+
+---
+
+## 6. 异常处理
+
+如果命令失败、超时、返回非 JSON 或结果异常：
+
+1. 可以用同一命令重试一次；
+2. 不得换用直接 Python；
+3. 不得读取数据文件；
+4. 不得输出系统路径、配置、堆栈；
+5. 最终以友好提示返回。
+
+---
+
+## 7. 输出组装参考
+
+完整单词查询结果按以下顺序组装：
+
+```md
+**翻译**
+- ...
+
+**发音**
+- 英式：...
+- 美式：...
+- 音节：...
+- 重音：...
+- 发音技巧：...
+
+**词根**
+- 前缀：...
+- 词根：...
+- 后缀：...
+- 记忆方法：...
+
+**AI例句**
+英文例句  
+中文翻译
+
+**语法分析**
+- 句型：...
+- 成分：...
+- 考点：...
+- 难度：...
+```
+
+如果某部分无结果，保留栏目并写“暂无相关信息”。
