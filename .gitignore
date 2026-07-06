@@ -7,3 +7,6 @@ __pycache__/
 memory/
 venv/
 plugins/
+call_logs/
+sync_logs/
+word_list_export.txt

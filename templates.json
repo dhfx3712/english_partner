@@ -1,0 +1,470 @@
+{
+  "S002": {
+    "template": "Am I allowed to ___?",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "请求许可，后接动词原形"
+  },
+  "S009": {
+    "template": "As long as you ___, you will ___.",
+    "type": "multi_slot",
+    "slots": ["verb_phrase", "verb_phrase"],
+    "grammar": "条件句，主将从现"
+  },
+  "S014": {
+    "template": "Can't we ___?",
+    "type": "verb_phrase",
+    "slot_pos": "after_we",
+    "grammar": "反问建议，后接动词原形"
+  },
+  "S015": {
+    "template": "Could you do me a favor and ___?",
+    "type": "verb_phrase",
+    "slot_pos": "after_and",
+    "grammar": "请求帮助，后接动词原形"
+  },
+  "S022": {
+    "template": "Would you mind ___?",
+    "type": "verb_phrase",
+    "slot_pos": "after_mind",
+    "grammar": "请求许可，后接动名词"
+  },
+  "S028": {
+    "template": "Don't be afraid of ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_of",
+    "grammar": "鼓励，后接名词或动名词"
+  },
+  "S030": {
+    "template": "Don't waste time ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_time",
+    "grammar": "劝诫，后接动名词"
+  },
+  "S038": {
+    "template": "Have you considered ___?",
+    "type": "verb_phrase",
+    "slot_pos": "after_considered",
+    "grammar": "询问考虑，后接动名词"
+  },
+  "S045": {
+    "template": "How does ___ sound?",
+    "type": "noun_phrase",
+    "slot_pos": "before_sound",
+    "grammar": "征询意见，后接名词/动名词"
+  },
+  "S048": {
+    "template": "I absolutely agree with ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_with",
+    "grammar": "表达同意，后接名词/代词"
+  },
+  "S050": {
+    "template": "I am planning to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达计划，后接动词原形"
+  },
+  "S053": {
+    "template": "I believe that ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_that",
+    "grammar": "表达信念，后接从句/名词短语"
+  },
+  "S054": {
+    "template": "I believe we should ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_should",
+    "grammar": "提出主张，后接动词原形"
+  },
+  "S060": {
+    "template": "I feel like ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_like",
+    "grammar": "表达意愿，后接动名词"
+  },
+  "S064": {
+    "template": "I don't think it is necessary to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达否定看法，后接动词原形"
+  },
+  "S067": {
+    "template": "I dream of ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_of",
+    "grammar": "表达梦想，后接动名词"
+  },
+  "S068": {
+    "template": "I'm dying to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达渴望，后接动词原形"
+  },
+  "S069": {
+    "template": "I feel very honored to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达荣幸，后接动词原形"
+  },
+  "S074": {
+    "template": "I have confidence in ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_in",
+    "grammar": "表达信心，后接名词/动名词"
+  },
+  "S080": {
+    "template": "I intend to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达意图，后接动词原形"
+  },
+  "S083": {
+    "template": "I prefer ___ to ___.",
+    "type": "multi_slot",
+    "slots": ["noun_phrase", "noun_phrase"],
+    "grammar": "比较偏好，两个名词/动名词"
+  },
+  "S084": {
+    "template": "I prefer to ___ rather than ___.",
+    "type": "multi_slot",
+    "slots": ["verb_phrase", "verb_phrase"],
+    "grammar": "宁愿做…而不愿做…，动词原形"
+  },
+  "S087": {
+    "template": "I sincerely hope that ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_that",
+    "grammar": "真诚希望，后接从句"
+  },
+  "S088": {
+    "template": "I strongly advise you to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "强烈建议，后接动词原形"
+  },
+  "S089": {
+    "template": "I suggest that you ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_that",
+    "grammar": "提出建议，虚拟语气用动词原形"
+  },
+  "S090": {
+    "template": "I think this is a good chance for you to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "推荐机会，后接动词原形"
+  },
+  "S091": {
+    "template": "I think it is a good idea to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "提出建议，后接动词原形"
+  },
+  "S096": {
+    "template": "I think you'd better ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_better",
+    "grammar": "委婉建议，后接动词原形"
+  },
+  "S103": {
+    "template": "I would advise you to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "委婉建议，后接动词原形"
+  },
+  "S104": {
+    "template": "I would appreciate it if you ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_you",
+    "grammar": "礼貌请求，后接动词过去式"
+  },
+  "S105": {
+    "template": "I would like to recommend ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_recommend",
+    "grammar": "推荐事物，后接名词"
+  },
+  "S111": {
+    "template": "I'd like to suggest you ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_you",
+    "grammar": "委婉建议，后接动词原形"
+  },
+  "S115": {
+    "template": "I'm busy ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_busy",
+    "grammar": "表达忙碌，后接动名词"
+  },
+  "S116": {
+    "template": "I'm considering ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_considering",
+    "grammar": "表达考虑，后接动名词"
+  },
+  "S119": {
+    "template": "I'm determined to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达决心，后接动词原形"
+  },
+  "S120": {
+    "template": "I'm interested in ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_in",
+    "grammar": "表达兴趣，后接名词/动名词"
+  },
+  "S126": {
+    "template": "I'm really fond of ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_of",
+    "grammar": "表达喜爱，后接名词/动名词"
+  },
+  "S129": {
+    "template": "I have a desire to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达渴望，后接动词原形"
+  },
+  "S130": {
+    "template": "I've decided to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达决定，后接动词原形"
+  },
+  "S133": {
+    "template": "If I were you, I would ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_would",
+    "grammar": "虚拟语气建议，后接动词原形"
+  },
+  "S135": {
+    "template": "If it is possible, ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_comma",
+    "grammar": "条件假设，后接完整句子"
+  },
+  "S137": {
+    "template": "If you want to ___, you'll have to ___.",
+    "type": "multi_slot",
+    "slots": ["verb_phrase", "verb_phrase"],
+    "grammar": "条件结果，后接动词原形"
+  },
+  "S142": {
+    "template": "In my opinion, ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_comma",
+    "grammar": "表达观点，后接完整句子"
+  },
+  "S143": {
+    "template": "In order to ___, you should ___.",
+    "type": "multi_slot",
+    "slots": ["verb_phrase", "verb_phrase"],
+    "grammar": "目的建议，后接动词原形"
+  },
+  "S149": {
+    "template": "Is it possible to ___?",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "询问可能性，后接动词原形"
+  },
+  "S160": {
+    "template": "It won't do any harm to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "建议无害，后接动词原形"
+  },
+  "S163": {
+    "template": "It helps if you ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_you",
+    "grammar": "建议好处，后接动词原形"
+  },
+  "S166": {
+    "template": "It is bad to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "评价不良，后接动词原形"
+  },
+  "S171": {
+    "template": "It is easy enough to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "评价容易，后接动词原形"
+  },
+  "S172": {
+    "template": "It is essential that ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_that",
+    "grammar": "强调必要性，后接虚拟语气从句"
+  },
+  "S176": {
+    "template": "It is important that ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_that",
+    "grammar": "强调重要性，后接虚拟语气从句"
+  },
+  "S179": {
+    "template": "It is necessary to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "强调必要性，后接动词原形"
+  },
+  "S180": {
+    "template": "It is no use ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_use",
+    "grammar": "强调无用，后接动名词"
+  },
+  "S192": {
+    "template": "It is useful to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "评价有用，后接动词原形"
+  },
+  "S199": {
+    "template": "It is a bad habit to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "评价不良习惯，后接动词原形"
+  },
+  "S200": {
+    "template": "It is a great pleasure to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达愉快，后接动词原形"
+  },
+  "S203": {
+    "template": "It is my great honor to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达荣幸，后接动词原形"
+  },
+  "S204": {
+    "template": "It is good to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "评价正面，后接动词原形"
+  },
+  "S205": {
+    "template": "It is our duty to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "强调责任，后接动词原形"
+  },
+  "S206": {
+    "template": "It is wrong to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "评价错误，后接动词原形"
+  },
+  "S210": {
+    "template": "It'll do you good to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "建议好处，后接动词原形"
+  },
+  "S216": {
+    "template": "Make sure to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "提醒，后接动词原形"
+  },
+  "S217": {
+    "template": "Maybe it's better to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "委婉建议，后接动词原形"
+  },
+  "S232": {
+    "template": "Please don't hesitate to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "鼓励行动，后接动词原形"
+  },
+  "S233": {
+    "template": "Please feel free to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "鼓励行动，后接动词原形"
+  },
+  "S240": {
+    "template": "Something must be done to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "强调必须行动，后接动词原形"
+  },
+  "S246": {
+    "template": "The secret of ___ is to ___.",
+    "type": "multi_slot",
+    "slots": ["noun_phrase", "verb_phrase"],
+    "grammar": "揭示秘诀，前接名词/动名词，后接动词原形"
+  },
+  "S251": {
+    "template": "There is no doubt that ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_that",
+    "grammar": "强调毫无疑问，后接从句"
+  },
+  "S254": {
+    "template": "There's no point in ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_in",
+    "grammar": "强调无意义，后接动名词"
+  },
+  "S263": {
+    "template": "We must do something to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "强调必须行动，后接动词原形"
+  },
+  "S264": {
+    "template": "We must take measures to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "强调采取措施，后接动词原形"
+  },
+  "S265": {
+    "template": "We should make every effort to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "强调努力，后接动词原形"
+  },
+  "S284": {
+    "template": "Would you like to ___?",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "礼貌邀请，后接动词原形"
+  },
+  "S290": {
+    "template": "You are supposed to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "表达应该，后接动词原形"
+  },
+  "S294": {
+    "template": "You should avoid ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_avoid",
+    "grammar": "建议避免，后接动名词"
+  },
+  "S295": {
+    "template": "You should make an effort to ___.",
+    "type": "verb_phrase",
+    "slot_pos": "after_to",
+    "grammar": "建议努力，后接动词原形"
+  },
+  "S296": {
+    "template": "You should make good use of ___.",
+    "type": "noun_phrase",
+    "slot_pos": "after_of",
+    "grammar": "建议利用，后接名词"
+  },
+  "S299": {
+    "template": "You will be able to ___ if you ___.",
+    "type": "multi_slot",
+    "slots": ["verb_phrase", "verb_phrase"],
+    "grammar": "条件结果，后接动词原形"
+  }
+}
