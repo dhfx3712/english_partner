@@ -39,7 +39,10 @@
 3. `ep-query` 包装脚本验证命令合法性 → 放行或拒绝
 4. 合法命令转发给守护进程（Unix socket）
 5. 守护进程从紧凑索引查数据 → 返回 JSON
-6. AI 组装回复 → `message` 工具发回飞书群
+6. **AI 查询完成后必须触发回调日志：** `/home/ubuntu/.openclaw/EnglishPartner/venv/bin/python3 /home/ubuntu/.openclaw/EnglishPartner/call_logger.py record <查询类型> <单词>`
+7. AI 继续生成例句、语法分析 → 组装完整回复 → `message` 工具发回飞书群
+
+> 💡 重要：日志回调是每日汇总到记忆复习系统的关键，不能省略或遗漏。省略会导致当天查询不进入复习库。
 
 ---
 

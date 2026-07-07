@@ -7,6 +7,15 @@ TOOLS.md 只负责工具调用方式，SOUL.md 只负责表达风格，ARCHITECT
 
 ---
 
+## ⚠️ 核心不可违反规则（绝对不能丢）
+
+1. **日志回调必须执行**：每完成一次单词/发音/词根查询，必须调用 `/home/ubuntu/.openclaw/EnglishPartner/venv/bin/python3 /home/ubuntu/.openclaw/EnglishPartner/call_logger.py record <查询类型> <单词>` 记录日志，**省略会导致查询无法进入每日记忆复习汇总**
+2. **所有查询必须走 `ep-query` 入口**：禁止直接调用 Python 脚本或读取数据文件
+3. **例句生成优先走模板**：先召回匹配句型模板，能填空就本地生成，不行再用 AI 兜底
+4. **完整查询流程不能跳步**：必须按 释义 → 发音 → 词根 → 记录 → 例句 → 语法 的固定顺序执行
+
+---
+
 ## 1. 项目边界
 
 EnglishPartner 只处理英语学习相关任务，包括：
@@ -49,9 +58,14 @@ EnglishPartner 只处理英语学习相关任务，包括：
 1. 查询释义
 2. 查询发音
 3. 查询词根词缀
-4. 生成 AI 例句
-5. 分析本次生成例句的语法
-6. 按固定顺序输出：翻译 → 发音 → 词根 → AI例句 → 语法分析
+4. **记录查询日志**：每查询一个单词/词根/发音后，调用
+   ```bash
+   python3 /home/ubuntu/.openclaw/EnglishPartner/call_logger.py record <查询类型> <单词>
+   ```
+   必须记录，不能漏掉
+5. 生成 AI 例句
+6. 分析本次生成例句的语法
+7. 按固定顺序输出：翻译 → 发音 → 词根 → AI例句 → 语法分析
 
 不得跳过任一基础查询步骤。  
 如果某项无结果，应保留栏目并写“暂无相关信息”，不得编造数据。
@@ -60,10 +74,19 @@ EnglishPartner 只处理英语学习相关任务，包括：
 
 ## 4. 专项问答分流
 
-如果用户明确只问“意思 / 翻译 / 释义”，只返回释义部分。  
-如果用户明确只问“发音 / 音标 / 读法”，只返回发音部分。  
-如果用户明确只问“词根 / 词缀 / 构词”，只返回词根部分。  
-如果用户明确只要例句，只返回例句和必要解释。  
+如果用户明确只问“意思 / 翻译 / 释义”，只返回释义部分。**查询后必须记录日志**：
+```bash
+/home/ubuntu/.openclaw/EnglishPartner/venv/bin/python3 /home/ubuntu/.openclaw/EnglishPartner/call_logger.py record word <单词>
+```
+如果用户明确只问“发音 / 音标 / 读法”，只返回发音部分。**查询后必须记录日志**：
+```bash
+/home/ubuntu/.openclaw/EnglishPartner/venv/bin/python3 /home/ubuntu/.openclaw/EnglishPartner/call_logger.py record pronounce <单词>
+```
+如果用户明确只问“词根 / 词缀 / 构词”，只返回词根部分。**查询后必须记录日志**：
+```bash
+/home/ubuntu/.openclaw/EnglishPartner/venv/bin/python3 /home/ubuntu/.openclaw/EnglishPartner/call_logger.py record root <单词>
+```
+如果用户明确只要例句，只返回例句和必要解释。
 如果用户明确只要语法分析，只分析用户给出的句子。
 
 只有用户输入单个英文单词且没有专项限定时，才执行完整查询流程。
