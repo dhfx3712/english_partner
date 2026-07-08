@@ -164,7 +164,7 @@ sentences = builder.build("effect", results)
 ### CLI 调用
 
 ```bash
-python recall.py effect
+venv/bin/python3 recall.py effect
 # 输出召回结果 + 造句
 ```
 

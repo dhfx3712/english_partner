@@ -11,18 +11,18 @@
 pip install -r requirements.txt  # 如有
 
 # 2. 构建数据（从大 JSON 拆分为小文件）
-python3 split_all_libs.py
+venv/bin/python3 split_all_libs.py
 
 # 3. 生成紧凑索引
-python3 build_compact_index.py
+venv/bin/python3 build_compact_index.py
 
 # 4. 启动守护进程
-python3 query_engine.py daemon
+venv/bin/python3 query_engine.py daemon
 
 # 5. 测试查询
-python3 query_engine.py word hello
-python3 query_engine.py root conduct
-python3 query_engine.py pronounce hello
+venv/bin/python3 query_engine.py word hello
+venv/bin/python3 query_engine.py root conduct
+venv/bin/python3 query_engine.py pronounce hello
 ```
 
 ## 查询单词
@@ -37,8 +37,8 @@ ep-query grammar <句子>    # 语法分析
 ## 守护进程管理
 
 ```bash
-python3 query_engine.py status   # 查看状态
-python3 query_engine.py stop     # 停止
+venv/bin/python3 query_engine.py status   # 查看状态
+venv/bin/python3 query_engine.py stop     # 停止
 ```
 
 首次查询会自动启动守护进程，无需手动操作。

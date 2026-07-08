@@ -14,6 +14,7 @@ import re
 import json
 import sys
 import os
+import random
 
 # 当前目录
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -86,22 +87,23 @@ class SentenceBuilder:
         """多槽位填充"""
         return word  # 简化版，只填第一个槽
 
-    def build_prompt(self, word, sid, scene='general'):
+    def build_prompt(self, word, sid, scene='general', extra_word=None):
         """构建压缩 AI Prompt"""
         info = self.all_patterns.get(sid, {})
         pattern_en = info.get('pattern_en', '')
         pattern_cn = info.get('pattern_cn', '')
         function = info.get('function', '')
 
+        extra = f" | extra_word={extra_word}" if extra_word else ""
         prompt = (
-            f"word={word} | "
+            f"word={word}{extra} | "
             f"pattern=\"{pattern_en}\" | "
             f"scene={scene} | "
             f"n=2"
         )
         return prompt
 
-    def build(self, word, recall_results, scene='general'):
+    def build(self, word, recall_results, scene='general', extra_word=None):
         """
         根据召回结果生成例句
 
@@ -109,6 +111,7 @@ class SentenceBuilder:
             word: 用户输入的单词
             recall_results: recall() 返回的 [(sid, score, mtype), ...]
             scene: 场景描述
+            extra_word: 可选的额外单词（从 recent_words.md 随机选取）
 
         返回:
             [{
@@ -145,14 +148,26 @@ class SentenceBuilder:
                 entry['prompt'] = None
                 entry['cost'] = 0
             else:
-                # AI 生成
+                # AI 生成（带上 extra_word）
                 entry['sentence'] = None
-                entry['prompt'] = self.build_prompt(word, sid, scene)
+                entry['prompt'] = self.build_prompt(word, sid, scene, extra_word)
                 entry['cost'] = len(entry['prompt']) // 4  # 粗略估算 token 数
 
             output.append(entry)
 
         return output
+
+
+def _pick_extra_word():
+    """从 recent_words.md 随机取一个历史单词"""
+    path = os.path.join(BASE_DIR, 'recent_words.md')
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            text = f.read()
+        words = re.findall(r'^\|\s*\d+\s*\|\s*(\w+)', text, re.M)
+        return random.choice(words) if words else None
+    except Exception:
+        return None
 
 
 def main():
@@ -180,10 +195,16 @@ def main():
     engine = RecallEngine(os.path.join(BASE_DIR, 'index_data.json'))
     builder = SentenceBuilder()
 
+    extra_word = _pick_extra_word()
     results = engine.recall(word, limit)
-    sentences = builder.build(word, results, scene)
+    sentences = builder.build(word, results, scene, extra_word)
 
-    print(f"\n📌 单词: {word}  |  场景: {scene}\n")
+    print(f"\n📌 单词: {word}  |  场景: {scene}", end='')
+    if extra_word:
+        print(f"  |  关联历史词: {extra_word}")
+    else:
+        print()
+    print()
 
     for s in sentences:
         if s['cost'] == 0 and s['sentence']:

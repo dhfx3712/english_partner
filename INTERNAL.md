@@ -32,6 +32,28 @@
                               └─────────────────────┘
 ```
 
+### 开发约定：所有 Python 脚本必须走虚拟环境
+
+项目所有 Python 脚本（包括新增脚本）必须通过 `venv/bin/python3` 执行。
+
+```bash
+# ✅ 正确
+venv/bin/python3 recall.py <word>
+venv/bin/python3 call_logger.py record word <word>
+venv/bin/python3 new_script.py <args>
+
+# ❌ 禁止
+python3 recall.py <word>
+python3 call_logger.py record word <word>
+```
+
+新增 Python 脚本后，需确认：
+1. 脚本本身在项目根目录下
+2. 通过 `venv/bin/python3` 调用
+3. 如果脚本需要被 `ep-query` 路由，需修改 `ep-query` 包装脚本
+
+---
+
 ### 查询链路
 
 1. 用户从飞书发送单词 → OpenClaw Gateway 路由到 `english-agent`
@@ -94,17 +116,17 @@
 
 ```bash
 # 自动启动（首次查询时自动 fork 守护进程）
-python3 query_engine.py word hostile
+venv/bin/python3 query_engine.py word hostile
 
 # 手动启动
-python3 query_engine.py daemon
+venv/bin/python3 query_engine.py daemon
 ```
 
 ### 状态管理
 
 ```bash
-python3 query_engine.py status     # 查看运行状态
-python3 query_engine.py stop       # 停止守护进程
+venv/bin/python3 query_engine.py status     # 查看运行状态
+venv/bin/python3 query_engine.py stop       # 停止守护进程
 ```
 
 ### 守护进程特性
@@ -118,9 +140,9 @@ python3 query_engine.py stop       # 停止守护进程
 ### 客户端（CLI 模式）
 
 ```bash
-python3 query_engine.py word <word>       # 查释义
-python3 query_engine.py root <word>       # 查词根
-python3 query_engine.py pronounce <word>  # 查发音
+venv/bin/python3 query_engine.py word <word>       # 查释义
+venv/bin/python3 query_engine.py root <word>       # 查词根
+venv/bin/python3 query_engine.py pronounce <word>  # 查发音
 ```
 
 每个 CLI 子进程约 10MB RSS（仅 socket 通信，不加载索引）。
@@ -215,7 +237,7 @@ bash scripts/apply_security.sh
 ### 从大 JSON 拆分为小文件
 
 ```bash
-python3 split_all_libs.py
+venv/bin/python3 split_all_libs.py
 ```
 
 - 输入：`datas/word_lib.json`、`datas/root_lib.json`、`datas/pronounce_lib.json`
@@ -225,7 +247,7 @@ python3 split_all_libs.py
 ### 生成紧凑索引
 
 ```bash
-python3 build_compact_index.py
+venv/bin/python3 build_compact_index.py
 ```
 
 - 输出：`datas/index_compact.json`（两段式紧凑格式）
@@ -278,7 +300,7 @@ result = analyze_sentence("She invited her friends to the party.")
 
 1. 准备 JSON 文件，格式参考旧大文件
 2. 修改 `split_all_libs.py` 添加新的拆分规则
-3. 运行 `python3 split_all_libs.py`
+3. 运行 `venv/bin/python3 split_all_libs.py`
 4. 在 `query_utils.py` 中添加对应的 getter 函数
 5. 在 `query_engine.py` 的 GETTERS 字典中注册
 

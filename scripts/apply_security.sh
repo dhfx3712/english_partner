@@ -133,17 +133,17 @@ WORKSPACE="/root/.openclaw/EnglishPartner"
 case "${1:-}" in
     word|root|pronounce)
         [ -n "${2:-}" ] || { echo '{"error":"Missing word"}'; exit 1; }
-        exec python3 "${WORKSPACE}/query_engine.py" "$1" "$2"
+        exec "${WORKSPACE}/venv/bin/python3" "${WORKSPACE}/query_engine.py" "$1" "$2"
         ;;
     grammar)
         [ -n "${2:-}" ] || { echo '{"error":"Missing sentence"}'; exit 1; }
-        exec python3 "${WORKSPACE}/grammar_engine.py" "$2"
+        exec "${WORKSPACE}/venv/bin/python3" "${WORKSPACE}/grammar_engine.py" "$2"
         ;;
     daemon)
-        exec python3 "${WORKSPACE}/query_engine.py" daemon
+        exec "${WORKSPACE}/venv/bin/python3" "${WORKSPACE}/query_engine.py" daemon
         ;;
     status)
-        exec python3 "${WORKSPACE}/query_engine.py" status
+        exec "${WORKSPACE}/venv/bin/python3" "${WORKSPACE}/query_engine.py" status
         ;;
     *)
         echo "ERROR: Permission denied." >&2
@@ -174,7 +174,7 @@ if [ -f "${PID_FILE}" ]; then
 fi
 
 # 启动新 daemon
-python3 "${WORKSPACE}/query_engine.py" daemon &
+"${WORKSPACE}/venv/bin/python3" "${WORKSPACE}/query_engine.py" daemon &
 DAEMON_PID=$!
 echo "  🟢 新守护进程启动中 (PID=${DAEMON_PID})..."
 
